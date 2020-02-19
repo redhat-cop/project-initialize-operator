@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-initialize
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: project-initialize
+  template:
+    metadata:
+      labels:
+        name: project-initialize
+    spec:
+      serviceAccountName: project-initialize
+      containers:
+        - name: project-initialize
+          # Replace this with the built image name
+          image: REPLACE_IMAGE
+          command:
+          - project-initialize
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "project-initialize"

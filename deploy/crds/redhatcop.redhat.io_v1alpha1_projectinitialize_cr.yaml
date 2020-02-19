@@ -1,0 +1,7 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitialize
+metadata:
+  name: example-projectinitialize
+spec:
+  # Add fields here
+  size: 3
