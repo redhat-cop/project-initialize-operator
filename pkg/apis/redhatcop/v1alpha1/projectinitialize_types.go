@@ -9,23 +9,23 @@ import (
 
 // ProjectInitializeSpec defines the desired state of ProjectInitialize
 type ProjectInitializeSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
-	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+	Team        string `json:"team"`
+	Env         string `json:"env"`
+	Cluster     string `json:"cluster,omitempty"`
+	DisplayName string `json:"displayName"`
+	Desc        string `json:"desc"`
 }
 
 // ProjectInitializeStatus defines the observed state of ProjectInitialize
 type ProjectInitializeStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
-	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+	NamespaceCreated bool `json:"namespaceCreated,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // ProjectInitialize is the Schema for the projectinitializes API
 // +kubebuilder:subresource:status
-// +kubebuilder:resource:path=projectinitializes,scope=Namespaced
+// +kubebuilder:resource:path=projectinitializes,scope=Cluster
 type ProjectInitialize struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

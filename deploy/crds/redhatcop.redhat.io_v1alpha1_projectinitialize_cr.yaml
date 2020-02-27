@@ -3,5 +3,6 @@ kind: ProjectInitialize
 metadata:
   name: example-projectinitialize
 spec:
-  # Add fields here
-  size: 3
+  team: test
+  env: dev
+  cluster: np1

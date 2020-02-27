@@ -2,10 +2,16 @@ package projectinitialize
 
 import (
 	"context"
+	"fmt"
 
+	projectset "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
 	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
+	projectinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/ocp/project"
+	project "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/resources"
+	"github.com/redhat-cop/quay-operator/pkg/controller/quayecosystem/logging"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -31,7 +37,11 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &ReconcileProjectInitialize{client: mgr.GetClient(), scheme: mgr.GetScheme()}
+	client, err := projectset.NewForConfig(mgr.GetConfig())
+	if err != nil {
+		return nil
+	}
+	return &ReconcileProjectInitialize{client: mgr.GetClient(), scheme: mgr.GetScheme(), projectClient: client}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
@@ -68,8 +78,9 @@ var _ reconcile.Reconciler = &ReconcileProjectInitialize{}
 type ReconcileProjectInitialize struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
-	client client.Client
-	scheme *runtime.Scheme
+	client        client.Client
+	scheme        *runtime.Scheme
+	projectClient *projectset.ProjectV1Client
 }
 
 // Reconcile reads that state of the cluster for a ProjectInitialize object and makes changes based on the state read
@@ -82,7 +93,6 @@ type ReconcileProjectInitialize struct {
 func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
 	reqLogger.Info("Reconciling ProjectInitialize")
-
 	// Fetch the ProjectInitialize instance
 	instance := &redhatcopv1alpha1.ProjectInitialize{}
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
@@ -98,6 +108,23 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 	}
 
 	/* TODO - Add reconcile cycle */
+	//Does the project exist?
+	projectName := projectinit.GetProjectName(instance.Spec.Team, instance.Spec.Env)
+	found, err := r.projectClient.Projects().Get(projectName, metav1.GetOptions{})
+	// If project doesn't exist, create it
+	if err != nil {
+		projectRequest := project.GetProjectRequest(projectName, instance.Spec.DisplayName, instance.Spec.Desc)
+		newProject, err := projectinit.InitializeProjectOCP(r.projectClient, projectRequest)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+		// TODO setup ArgoCD, Qoutas, GIT and LDAP
+		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
+	} else {
+		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
+		// TODO check for changes to CR file
+		// Example - changes to qouta size
+	}
 
 	return reconcile.Result{}, nil
 }
