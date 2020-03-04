@@ -30,11 +30,11 @@ $ oc apply -f deploy/role_binding.yaml
 
 Login to the cluster via the Service Account above
 ```
-$ oc sa get-token project-initialize
-$ oc login --token="{above_token}"
+$ TOKEN=$(oc sa get-token project-initialize)
+$ oc login --token="${TOKEN}"
 ```
 
 Run Operator-SDK
 ```
-$ operator-sdk up local --namespace="project-operator" 
+$ operator-sdk run --local --namespace="project-operator" 
 ```
