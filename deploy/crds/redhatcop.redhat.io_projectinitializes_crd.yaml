@@ -9,7 +9,7 @@ spec:
     listKind: ProjectInitializeList
     plural: projectinitializes
     singular: projectinitialize
-  scope: Namespaced
+  scope: Cluster
   subresources:
     status: {}
   validation:
@@ -30,9 +30,28 @@ spec:
           type: object
         spec:
           description: ProjectInitializeSpec defines the desired state of ProjectInitialize
+          properties:
+            cluster:
+              type: string
+            desc:
+              type: string
+            displayName:
+              type: string
+            env:
+              type: string
+            team:
+              type: string
+          required:
+          - desc
+          - displayName
+          - env
+          - team
           type: object
         status:
           description: ProjectInitializeStatus defines the observed state of ProjectInitialize
+          properties:
+            namespaceCreated:
+              type: boolean
           type: object
       type: object
   version: v1alpha1
