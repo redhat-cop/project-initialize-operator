@@ -15,9 +15,11 @@ kind: ProjectInitializeQuota
 metadata:
   name: small
 spec:
-  cpu: "5"
-  memory: "10Gi"
-  pods: "10"
+  resourceQuotaSpec:
+    hard:
+      cpu: "5"
+      memory: "10Gi"
+      pods: "10"
 ```
 
 

@@ -124,7 +124,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 				return reconcile.Result{}, err
 				// TODO reverse the project creation?
 			}
-			quota := project.GetQuotaResource(fmt.Sprintf("%s-quota", instance.Spec.Team), projectName, quotaSize.Spec.Cpu, quotaSize.Spec.Memory, quotaSize.Spec.Pods)
+			quota := project.GetQuotaResource(fmt.Sprintf("%s-quota", instance.Spec.Team), projectName, *quotaSize)
 			err = projectinit.AddQuotaToProject(r.client, quota)
 			if err != nil {
 				return reconcile.Result{}, err

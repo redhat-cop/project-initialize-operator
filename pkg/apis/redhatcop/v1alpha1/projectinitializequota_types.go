@@ -1,6 +1,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -9,9 +10,7 @@ import (
 
 // ProjectInitializeQuotaSpec defines the desired state of ProjectInitializeQuota
 type ProjectInitializeQuotaSpec struct {
-	Cpu    string `json:"cpu"`
-	Memory string `json:"memory"`
-	Pods   string `json:"pods"`
+	corev1.ResourceQuotaSpec `json:"resourceQuotaSpec"`
 }
 
 // ProjectInitializeQuotaStatus defines the observed state of ProjectInitializeQuota

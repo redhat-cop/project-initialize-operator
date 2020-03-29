@@ -22,7 +22,7 @@ func AddQuotaToProject(client client.Client, quota *corev1.ResourceQuota) error 
 	return nil
 }
 
-func GetQuotaSizeFromCluster(client client.Client, name string) (error, *redhatcopv1alpha1.ProjectInitializeQuota) {
+func GetQuotaSizeFromCluster(client client.Client, name string) (error, *corev1.ResourceQuotaSpec) {
 	quotaSize := &redhatcopv1alpha1.ProjectInitializeQuota{}
 	err := client.Get(context.TODO(), types.NamespacedName{Name: name}, quotaSize)
 	if err != nil {
@@ -30,5 +30,5 @@ func GetQuotaSizeFromCluster(client client.Client, name string) (error, *redhatc
 		return err, nil
 	}
 
-	return nil, quotaSize
+	return nil, &quotaSize.Spec.ResourceQuotaSpec
 }
