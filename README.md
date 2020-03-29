@@ -44,7 +44,7 @@ $ oc apply -f deploy/role.yaml
 $ oc apply -f deploy/role_binding.yaml
 ```
 
-Add cluster level qouta crd if needing to add defined qoutas (Optional) 
+Add cluster level quota crd if needing to add defined quotas (Optional) 
 ```
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
