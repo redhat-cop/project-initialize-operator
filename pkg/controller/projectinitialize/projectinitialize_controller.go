@@ -106,7 +106,6 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
-
 	/* TODO - Add reconcile cycle */
 	//Does the project exist?
 	projectName := projectinit.GetProjectName(instance.Spec.Team, instance.Spec.Env)
@@ -119,6 +118,19 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 			return reconcile.Result{}, err
 		}
 		// TODO setup ArgoCD, Qoutas, GIT and LDAP
+		if instance.Spec.QuotaSize != "" {
+			err, quotaSize := projectinit.GetQuotaSizeFromCluster(r.client, instance.Spec.QuotaSize)
+			if err != nil {
+				return reconcile.Result{}, err
+				// TODO reverse the project creation?
+			}
+			quota := project.GetQuotaResource(fmt.Sprintf("%s-quota", instance.Spec.Team), projectName, quotaSize.Spec.Cpu, quotaSize.Spec.Memory, quotaSize.Spec.Pods)
+			err = projectinit.AddQuotaToProject(r.client, quota)
+			if err != nil {
+				return reconcile.Result{}, err
+				// TODO reverse the project creation?
+			}
+		}
 		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
 		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))

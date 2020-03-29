@@ -1,0 +1,8 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitializeQuota
+metadata:
+  name: small
+spec:
+  cpu: "5"
+  memory: "10Gi"
+  pods: "10"

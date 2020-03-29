@@ -8,4 +8,5 @@ spec:
   cluster: np1
   displayName: "Test Project"
   desc: "A test project for showing the functionality of the project initialize operator"
+  quotaSize: small
 
