@@ -10,7 +10,7 @@ import (
 
 // ProjectInitializeQuotaSpec defines the desired state of ProjectInitializeQuota
 type ProjectInitializeQuotaSpec struct {
-	corev1.ResourceQuotaSpec `json:"resourceQuotaSpec"`
+	corev1.ResourceQuotaSpec `json:",inline"`
 }
 
 // ProjectInitializeQuotaStatus defines the observed state of ProjectInitializeQuota
