@@ -39,6 +39,8 @@ spec:
               type: string
             env:
               type: string
+            quotaSize:
+              type: string
             team:
               type: string
           required:

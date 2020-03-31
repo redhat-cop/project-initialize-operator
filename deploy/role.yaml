@@ -1,6 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  creationTimestamp: null
   name: project-initialize
 rules:
 - apiGroups:
@@ -14,6 +15,7 @@ rules:
   - events
   - configmaps
   - secrets
+  - resourcequotas
   verbs:
   - create
   - delete
@@ -40,7 +42,6 @@ rules:
 - apiGroups:
   - ""
   - project.openshift.io
-  attributeRestrictions: null
   resources:
   - projects
   - projectrequests
@@ -83,6 +84,7 @@ rules:
   - redhatcop.redhat.io
   resources:
   - '*'
+  - projectinitializequota
   verbs:
   - create
   - delete

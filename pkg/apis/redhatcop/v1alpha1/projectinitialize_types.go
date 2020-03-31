@@ -14,6 +14,7 @@ type ProjectInitializeSpec struct {
 	Cluster     string `json:"cluster,omitempty"`
 	DisplayName string `json:"displayName"`
 	Desc        string `json:"desc"`
+	QuotaSize   string `json:"quotaSize,omitempty"`
 }
 
 // ProjectInitializeStatus defines the observed state of ProjectInitialize
