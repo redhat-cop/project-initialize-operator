@@ -23,12 +23,7 @@ spec:
 
 
 ### Install (OpenShift)
-
-Run the following steps to run the operator locally. The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
-
-Prerequisites:
-
-In order to run the operator locally, you will need to meet these [prerequisites](https://github.com/operator-framework/operator-sdk#prerequisites) and then follow these [instructions](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md#install-the-operator-sdk-cli) to install the operator-sdk.
+The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
 
 Create the expected namespace
 ```
@@ -49,7 +44,12 @@ $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
 
 ### Run Locally (OpenShift)
-`This should only be for development purposes`
+Prerequisites:
+
+In order to run the operator locally, you will need to meet these [prerequisites](https://github.com/operator-framework/operator-sdk#prerequisites) and then follow these [instructions](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md#install-the-operator-sdk-cli) to install the operator-sdk.
+
+Run the following steps to run the operator locally.
+
 Pull in dependences
 ```
 $ export GO111MODULE=on
