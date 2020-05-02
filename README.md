@@ -22,19 +22,13 @@ spec:
 ```
 
 
-### Run Locally (OpenShift)
+### Install (OpenShift)
 
 Run the following steps to run the operator locally. The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
 
 Prerequisites:
 
 In order to run the operator locally, you will need to meet these [prerequisites](https://github.com/operator-framework/operator-sdk#prerequisites) and then follow these [instructions](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md#install-the-operator-sdk-cli) to install the operator-sdk.
-
-Pull in dependences
-```
-$ export GO111MODULE=on
-$ go mod vendor
-```
 
 Create the expected namespace
 ```
@@ -54,13 +48,28 @@ Add cluster level quota crd if needing to add defined quotas (Optional)
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
 
-Login to the cluster via the Service Account above
+### Run Locally (OpenShift)
+`This should only be for development purposes`
+Pull in dependences
+```
+$ export GO111MODULE=on
+$ go mod vendor
+```
+
+Login to the cluster via the Service Account shown in the above install step
 ```
 $ TOKEN=$(oc sa get-token project-initialize)
 $ oc login --token="${TOKEN}"
 ```
 
-Run Operator-SDK
+Run Operator-SDK locally
 ```
 $ operator-sdk run --local --namespace="project-operator" 
+```
+
+### Deploy Operator (OpenShift)
+Run the following command when ready to deploy the operator into cluster it will monitor
+
+```
+$ oc apply -f deploy/operator.yaml
 ```

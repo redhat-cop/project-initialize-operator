@@ -15,8 +15,7 @@ spec:
       serviceAccountName: project-initialize
       containers:
         - name: project-initialize
-          # Replace this with the built image name
-          image: REPLACE_IMAGE
+          image: "quay.apps.ent-ocp-prod-useast1.aws.internal.das/operators/project-init:latest"
           command:
           - project-initialize
           imagePullPolicy: Always
