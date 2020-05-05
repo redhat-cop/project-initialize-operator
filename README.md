@@ -48,28 +48,28 @@ Add cluster level quota crd if needing to add defined quotas (Optional)
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
 
-### Run Locally (OpenShift)
-`This should only be for development purposes`
-Pull in dependences
-```
-$ export GO111MODULE=on
-$ go mod vendor
-```
-
-Login to the cluster via the Service Account shown in the above install step
-```
-$ TOKEN=$(oc sa get-token project-initialize)
-$ oc login --token="${TOKEN}"
-```
-
-Run Operator-SDK locally
-```
-$ operator-sdk run --local --namespace="project-operator" 
-```
-
 ### Deploy Operator (OpenShift)
 Run the following command when ready to deploy the operator into cluster it will monitor
 
 ```
 $ oc apply -f deploy/operator.yaml
 ```
+
+## Example Workflow
+The project initialize operator will need to be running in the project-operator namespace before running the following example workslow.
+
+
+### Apply T-Shirt Size
+First start by applying the `ProjectInitializeQuota` CR that will be a global t-shirt size placeholder that the  initializer can reference when applying quotas to new projects.
+```
+$ oc apply -f deploy/examples/small_projectqouta_cr.yaml
+```
+
+### Apply Project Initializer
+Apply the `ProjectInitialize` CR which contains details about the dev team name, cluster name, and a reference to the `ProjectInitializeQuota` which will specify the quota to assign the namespace. 
+```
+$ oc apply -f deploy/examples/basic_projectinit_cr.yaml
+```
+
+## Development
+### [How-To](docs/development.md)

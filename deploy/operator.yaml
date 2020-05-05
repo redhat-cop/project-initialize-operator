@@ -15,7 +15,7 @@ spec:
       serviceAccountName: project-initialize
       containers:
         - name: project-initialize
-          image: "quay.apps.ent-ocp-prod-useast1.aws.internal.das/operators/project-init:latest"
+          image: "quay.io/cnuland/project-init-operator:latest"
           command:
           - project-initialize
           imagePullPolicy: Always
