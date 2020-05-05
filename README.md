@@ -37,17 +37,30 @@ $ oc new-project project-operator
 
 Add projectinitialize crd and resources to cluster
 ```
-$ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializes_crd.yaml
 $ oc apply -f deploy/service_account.yaml
 $ oc apply -f deploy/role.yaml
 $ oc apply -f deploy/role_binding.yaml
 ```
 
-Add cluster level quota crd if needing to add defined quotas (Optional) 
+### Add ProjectInitialize CRD
+#### 4.X OCP
+```
+$ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializes_crd.yaml
+```
+#### 3.X OCP
+```
+$ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializes_crd_3x.yaml
+```
+
+### Add ProjectInitialize CRD
+#### 4.X OCP
 ```
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
-
+#### 3.X OCP
+```
+$ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd_3x.yaml
+```
 ### Deploy Operator (OpenShift)
 Run the following command when ready to deploy the operator into cluster it will monitor
 
