@@ -3,23 +3,9 @@ Project Initialize Operator
 
 _This repository is currently undergoing active development. Functionality may be in flux_
 
-Operator to support initializing a new project under a GitOps management pattern [OpenShift Container Platform](https://www.openshift.com/container-platform/index.html)
+## Overview
 
-### Adding Defined Quota Sizes to Cluster
-
-When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
-
-```
-apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ProjectInitializeQuota
-metadata:
-  name: small
-spec:
-  hard:
-    cpu: "5"
-    memory: "10Gi"
-    pods: "10"
-```
+This repository contains the project initialize operator which provides functionality for creating new projects within OpenShift and triggering custom onboarding processes, specifically around the GitOps solution [ArgoCD](https://argoproj.github.io/argo-cd/).
 
 
 ### Install (OpenShift)
@@ -67,6 +53,23 @@ Run the following command when ready to deploy the operator into cluster it will
 ```
 $ oc apply -f deploy/operator.yaml
 ```
+
+### Adding Defined Quota Sizes to Cluster
+
+When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
+
+```
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitializeQuota
+metadata:
+  name: small
+spec:
+  hard:
+    cpu: "5"
+    memory: "10Gi"
+    pods: "10"
+```
+
 
 ## Example Workflow
 The project initialize operator will need to be running in the project-operator namespace before running the following example workslow.
