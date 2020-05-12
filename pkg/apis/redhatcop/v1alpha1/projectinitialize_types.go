@@ -39,28 +39,48 @@ type ProjectInitialize struct {
 
 // GitSource
 // +k8s:openapi-gen=true
-// Referencing Origin BuildConfig
 type GitSource struct {
+	// The host platform type
+	// +kubebuilder:validation:Enum=GitHub;GitLab;BitBucket
+	GitHost GitHost `json:"gittype"`
+	// The token or credentials of the users account
+	AccountSecret *kapi.LocalObjectReference `json:"accountSecret"`
+	// Private or public repository
+	Private bool `json:"private"`
+	// Description of the repository to create/clone
+	Desc string `json:"desc"`
+	// Optional GIT clone source for cloning existing template instead of creating new blank repo
+	GitClone *GitClone `json:"gittype,omitempty"`
+}
+
+// GitClone
+// +k8s:openapi-gen=true
+type GitClone struct {
 	// URI points to the source that will be built. The structure of the source
 	// will depend on the type of build to run
-	URI string `json:"uri"`
-
+	CloneURI string `json:"uri,omitempty"`
 	// Ref is the branch/tag/ref to build.
-	Ref string `json:"ref,omitempty"`
-
+	CloneRef string `json:"ref,omitempty"`
 	// ProxyConfig defines the proxies to use for the git clone operation
-	ProxyConfig `json:"proxyconfig,omitempty"`
-
+	CloneProxyConfig `json:"proxyconfig,omitempty"`
 	// SourceSecret is the name of a Secret that would be used for setting
 	// up the authentication for cloning private repository.
 	// The secret contains valid credentials for remote repository, where the
 	// data's key represent the authentication method to be used and value is
 	// the base64 encoded credentials. Supported auth methods are: ssh-privatekey.
-	SourceSecret *kapi.LocalObjectReference `json:"sourceSecret,omitempty"`
+	CloneSourceSecret *kapi.LocalObjectReference `json:"sourceSecret,omitempty"`
 }
 
+// GitHost specifies what type of API to use for accessing hosting platform
+type GitHost string
+
+const (
+	GitLab    GitHost = "GitLab"
+	BitBucket GitHost = "BitBucket"
+	GitHub    GitHost = "GitHub"
+)
+
 // ProxyConfig defines what proxies to use for an operation
-// Referencing Origin BuildConfig
 type ProxyConfig struct {
 	// HTTPProxy is a proxy used to reach the git repository over http
 	HTTPProxy *string
