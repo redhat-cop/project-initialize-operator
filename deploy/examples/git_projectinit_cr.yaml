@@ -1,0 +1,21 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitialize
+metadata:
+  name: example-projectinitialize
+spec:
+  team: test
+  env: dev
+  cluster: np1
+  displayName: "Test Project"
+  desc: "A test project for showing the functionality of the project initialize operator"
+  git:
+    gitHost: GitHub
+    private: false
+    desc: "Cool"
+    owner: cnuland
+  gitTemplate:
+    owner: cnuland
+    repo: hello-chris
+    accountSecret:
+      name: github
+      namespace: project-operator
