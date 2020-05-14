@@ -7,7 +7,10 @@ import (
 	"github.com/google/go-github/v31/github"
 	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
 	"golang.org/x/oauth2"
+	logf "sigs.k8s.io/controller-runtime/pkg/log"
 )
+
+var log = logf.Log.WithName("github_repository")
 
 func CheckForGitOpsRepository(teamName string, owner string, token string) (bool, error) {
 	// Check if repo exists
@@ -32,11 +35,12 @@ func CreateNewRespository(teamName string, token string, templateOwner string, t
 
 	repoName := getTeamRepoName(teamName)
 	newRepo := getTemplateRequest(repoName, gitDetails.Owner, gitDetails.Private, gitDetails.Desc)
-	repo, _, err := client.Repositories.CreateFromTemplate(context.Background(), templateOwner, templateRepo, newRepo)
+	repo, responce, err := client.Repositories.CreateFromTemplate(context.Background(), templateOwner, templateRepo, newRepo)
+	log.Info(fmt.Sprintf("GOT RESPONSE %+v\n", responce))
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Successfully created new repo: %v\n", repo.GetName())
+	log.Info(fmt.Sprintf("Successfully created new repo: %v\n", repo.GetName()))
 	return nil
 }
 

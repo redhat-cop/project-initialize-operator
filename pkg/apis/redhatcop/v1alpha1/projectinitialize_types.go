@@ -43,17 +43,13 @@ type ProjectInitialize struct {
 type Git struct {
 	// The host platform type
 	// +kubebuilder:validation:Enum=GitHub;GitLab;BitBucket
-	GitHost GitHost `json:"gittype"`
-	// The token or credentials of the account that the template will copy to
-	AccountSecret *kapi.LocalObjectReference `json:"accountSecret"`
+	GitHost GitHost `json:"gitHost"`
 	// Private or public repository
 	Private bool `json:"private"`
 	// Description of the repository to create/clone
 	Desc string `json:"desc"`
 	// Account to copy template
 	Owner string `json:"owner"`
-	// Ref is the branch/tag/ref to build.
-	Ref string `json:"ref,omitempty"`
 }
 
 // GitHost specifies what type of API to use for accessing hosting platform
@@ -69,7 +65,7 @@ const (
 // +k8s:openapi-gen=true
 type GitTemplate struct {
 	// The token of the account that the template will copy to
-	AccountSecret *kapi.LocalObjectReference `json:"accountSecret"`
+	AccountSecret *kapi.ObjectReference `json:"accountSecret"`
 	// Account of the template to copy
 	Owner string `json:"owner"`
 	// Repo to copy

@@ -9,7 +9,6 @@ import (
 	gitinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/git"
 	projectinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/ocp/project"
 	project "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/resources"
-	"github.com/redhat-cop/quay-operator/pkg/controller/quayecosystem/logging"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -110,7 +109,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 	/* TODO - Add reconcile cycle */
 	//Does the project exist?
 	projectName := projectinit.GetProjectName(instance.Spec.Team, instance.Spec.Env)
-	found, err := r.projectClient.Projects().Get(context.TODO(), projectName, metav1.GetOptions{})
+	found, err := r.projectClient.Projects().Get(projectName, metav1.GetOptions{})
 	// If project doesn't exist, create it
 	if err != nil {
 		projectRequest := project.GetProjectRequest(projectName, instance.Spec.DisplayName, instance.Spec.Desc)
@@ -132,16 +131,16 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 				// TODO reverse the project creation?
 			}
 		}
-		if instance.Spec.Git != null && instance.Spec.GitTemplate != null {
+		if instance.Spec.Git != nil && instance.Spec.GitTemplate != nil {
 			err = gitinit.GitInitialize(r.client, instance.ObjectMeta.Namespace, instance.Spec.Team, instance.Spec.Git, instance.Spec.GitTemplate)
 			if err != nil {
 				return reconcile.Result{}, err
 				// TODO reverse the project creation?
 			}
 		}
-		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
+		log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
-		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
+		log.Info(fmt.Sprintf("Found project %s", found.Name))
 		// TODO check for changes to CR file
 		// Example - changes to qouta size
 	}
