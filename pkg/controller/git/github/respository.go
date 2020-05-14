@@ -36,7 +36,6 @@ func CreateNewRespository(teamName string, token string, templateOwner string, t
 	repoName := getTeamRepoName(teamName)
 	newRepo := getTemplateRequest(repoName, gitDetails.Owner, gitDetails.Private, gitDetails.Desc)
 	repo, responce, err := client.Repositories.CreateFromTemplate(context.Background(), templateOwner, templateRepo, newRepo)
-	log.Info(fmt.Sprintf("GOT RESPONSE %+v\n", responce))
 	if err != nil {
 		return err
 	}
