@@ -47,30 +47,6 @@ $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd_3x.yaml
 ```
-### Deploy Operator (OpenShift)
-Run the following command when ready to deploy the operator into cluster it will monitor
-
-<<<<<<< HEAD
-### Run Locally (OpenShift)
-`This should only be for development purposes`
-Pull in dependences
-```
-$ export GO111MODULE=on
-$ go mod vendor
-```
-
-Login to the cluster via the Service Account shown in the above install step
-=======
->>>>>>> 2574d60a91b9d4b256a3e87e3de586977ffffd2f
-```
-$ oc apply -f deploy/operator.yaml
-```
-
-<<<<<<< HEAD
-Run Operator-SDK locally
-```
-$ operator-sdk run --local --namespace="project-operator" 
-```
 
 ### Deploy Operator (OpenShift)
 Run the following command when ready to deploy the operator into cluster it will monitor
@@ -78,23 +54,8 @@ Run the following command when ready to deploy the operator into cluster it will
 ```
 $ oc apply -f deploy/operator.yaml
 ```
-=======
-### Adding Defined Quota Sizes to Cluster
-
-When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
-
-```
-apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ProjectInitializeQuota
-metadata:
-  name: small
-spec:
-  hard:
-    cpu: "5"
     memory: "10Gi"
     pods: "10"
-```
-
 
 ## Example Workflow
 The project initialize operator will need to be running in the project-operator namespace before running the following example workslow.
@@ -114,4 +75,3 @@ $ oc apply -f deploy/examples/basic_projectinit_cr.yaml
 
 ## Development
 ### [How-To](docs/development.md)
->>>>>>> 2574d60a91b9d4b256a3e87e3de586977ffffd2f
