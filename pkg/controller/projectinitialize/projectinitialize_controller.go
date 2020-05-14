@@ -6,6 +6,7 @@ import (
 
 	projectset "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
 	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
+	gitinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/git"
 	projectinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/ocp/project"
 	project "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/resources"
 	"github.com/redhat-cop/quay-operator/pkg/controller/quayecosystem/logging"
@@ -109,7 +110,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 	/* TODO - Add reconcile cycle */
 	//Does the project exist?
 	projectName := projectinit.GetProjectName(instance.Spec.Team, instance.Spec.Env)
-	found, err := r.projectClient.Projects().Get(projectName, metav1.GetOptions{})
+	found, err := r.projectClient.Projects().Get(context.TODO(), projectName, metav1.GetOptions{})
 	// If project doesn't exist, create it
 	if err != nil {
 		projectRequest := project.GetProjectRequest(projectName, instance.Spec.DisplayName, instance.Spec.Desc)
@@ -126,6 +127,13 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 			}
 			quota := project.GetQuotaResource(fmt.Sprintf("%s-quota", instance.Spec.Team), projectName, *quotaSize)
 			err = projectinit.AddQuotaToProject(r.client, quota)
+			if err != nil {
+				return reconcile.Result{}, err
+				// TODO reverse the project creation?
+			}
+		}
+		if instance.Spec.Git != null && instance.Spec.GitTemplate != null {
+			err = gitinit.GitInitialize(r.client, instance.ObjectMeta.Namespace, instance.Spec.Team, instance.Spec.Git, instance.Spec.GitTemplate)
 			if err != nil {
 				return reconcile.Result{}, err
 				// TODO reverse the project creation?

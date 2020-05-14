@@ -4,13 +4,16 @@ go 1.13
 
 require (
 	github.com/google/go-github v17.0.0+incompatible
+	github.com/google/go-github/v31 v31.0.0
 	github.com/openshift/api v3.9.1-0.20190924102528-32369d4db2ad+incompatible
-	github.com/openshift/client-go v0.0.0-20190923180330-3b6373338c9b
+	github.com/openshift/client-go v0.0.0-20200326155132-2a6cd50aedd0
+	github.com/openshift/library-go v0.0.0-20200512120242-21a1ff978534 // indirect
 	github.com/operator-framework/operator-sdk v0.13.0
 	github.com/redhat-cop/quay-operator v1.0.2
 	github.com/spf13/pflag v1.0.5
-	k8s.io/api v0.0.0
-	k8s.io/apimachinery v0.0.0
+	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+	k8s.io/api v0.18.2
+	k8s.io/apimachinery v0.18.2
 	k8s.io/client-go v12.0.0+incompatible
 	sigs.k8s.io/controller-runtime v0.4.0
 )

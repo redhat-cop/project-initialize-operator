@@ -39,6 +39,67 @@ spec:
               type: string
             env:
               type: string
+            git:
+              description: Git
+              properties:
+                accountSecret:
+                  description: The token or credentials of the account that the template
+                    will copy to
+                  properties:
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      type: string
+                  type: object
+                desc:
+                  description: Description of the repository to create/clone
+                  type: string
+                gittype:
+                  description: The host platform type
+                  enum:
+                  - GitHub
+                  - GitLab
+                  - BitBucket
+                  type: string
+                owner:
+                  description: Account to copy template
+                  type: string
+                private:
+                  description: Private or public repository
+                  type: boolean
+                ref:
+                  description: Ref is the branch/tag/ref to build.
+                  type: string
+              required:
+              - accountSecret
+              - desc
+              - gittype
+              - owner
+              - private
+              type: object
+            gitTemplate:
+              description: Git
+              properties:
+                accountSecret:
+                  description: The token of the account that the template will copy
+                    to
+                  properties:
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      type: string
+                  type: object
+                owner:
+                  description: Account of the template to copy
+                  type: string
+                repo:
+                  description: Repo to copy
+                  type: string
+              required:
+              - accountSecret
+              - owner
+              - repo
+              type: object
             quotaSize:
               type: string
             team:
@@ -55,6 +116,7 @@ spec:
             namespaceCreated:
               type: boolean
           type: object
+      type: object
   version: v1alpha1
   versions:
   - name: v1alpha1
