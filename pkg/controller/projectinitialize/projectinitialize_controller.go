@@ -117,6 +117,14 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		if err != nil {
 			return reconcile.Result{}, err
 		}
+
+		if instance.Spec.NamespaceDetails != nil {
+			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+		}
+
 		// TODO setup ArgoCD, Qoutas, GIT and LDAP
 		if instance.Spec.QuotaSize != "" {
 			err, quotaSize := projectinit.GetQuotaSizeFromCluster(r.client, instance.Spec.QuotaSize)
