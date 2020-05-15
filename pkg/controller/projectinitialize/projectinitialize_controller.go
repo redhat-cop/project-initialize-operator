@@ -117,6 +117,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		if err != nil {
 			return reconcile.Result{}, err
 		}
+
 		// TODO setup ArgoCD, Qoutas, GIT and LDAP
 		if instance.Spec.QuotaSize != "" {
 			err, quotaSize := projectinit.GetQuotaSizeFromCluster(r.client, instance.Spec.QuotaSize)
@@ -134,8 +135,13 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
 		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
-		// TODO check for changes to CR file
-		// Example - changes to qouta size
+		// Check if labels or annotations have changed
+		if instance.Spec.NamespaceDetails != nil {
+			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+		}
 	}
 
 	return reconcile.Result{}, nil

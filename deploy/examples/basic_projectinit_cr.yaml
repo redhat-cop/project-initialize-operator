@@ -5,8 +5,12 @@ metadata:
 spec:
   team: test
   env: dev
-  cluster: np1
+  cluster: clusterA
   displayName: "Test Project"
   desc: "A test project for showing the functionality of the project initialize operator"
   quotaSize: small
-
+  namespaceDetails:
+    annotations:
+      testKey: testValue
+    labels:
+      testKey: testValue

@@ -9,12 +9,13 @@ import (
 
 // ProjectInitializeSpec defines the desired state of ProjectInitialize
 type ProjectInitializeSpec struct {
-	Team        string `json:"team"`
-	Env         string `json:"env"`
-	Cluster     string `json:"cluster,omitempty"`
-	DisplayName string `json:"displayName"`
-	Desc        string `json:"desc"`
-	QuotaSize   string `json:"quotaSize,omitempty"`
+	Team             string            `json:"team"`
+	Env              string            `json:"env"`
+	Cluster          string            `json:"cluster,omitempty"`
+	DisplayName      string            `json:"displayName"`
+	Desc             string            `json:"desc"`
+	QuotaSize        string            `json:"quotaSize,omitempty"`
+	NamespaceDetails *NamespaceDetails `json:"namespaceDetails,omitempty"`
 }
 
 // ProjectInitializeStatus defines the observed state of ProjectInitialize
@@ -36,12 +37,16 @@ type ProjectInitialize struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
 // ProjectInitializeList contains a list of ProjectInitialize
 type ProjectInitializeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ProjectInitialize `json:"items"`
+}
+
+type NamespaceDetails struct {
+	Labels      map[string]string `json:"labels,omitempty" protobuf:"bytes,11,rep,name=labels"`
+	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
 }
 
 func init() {
