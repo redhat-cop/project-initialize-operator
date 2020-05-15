@@ -3,11 +3,21 @@ module github.com/redhat-cop/project-initialize-operator/project-initialize
 go 1.13
 
 require (
+	github.com/certifi/gocertifi v0.0.0-20200211180108-c7c1fbc02894 // indirect
+	github.com/cockroachdb/cockroach v19.2.6+incompatible // indirect
+	github.com/cockroachdb/errors v1.2.4 // indirect
+	github.com/cockroachdb/logtags v0.0.0-20190617123548-eb05cc24525f // indirect
+	github.com/cockroachdb/ttycolor v0.0.0-20180709150743-a1d5aaeb377d // indirect
+	github.com/getsentry/raven-go v0.2.0 // indirect
 	github.com/google/go-github/v31 v31.0.0
+	github.com/lightstep/lightstep-tracer-go v0.20.0 // indirect
 	github.com/openshift/api v3.9.1-0.20190924102528-32369d4db2ad+incompatible
 	github.com/openshift/client-go v0.0.0-20200326155132-2a6cd50aedd0
+	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5 // indirect
 	github.com/operator-framework/operator-sdk v0.13.0
+	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5 // indirect
 	github.com/redhat-cop/quay-operator v1.0.2
+	github.com/sasha-s/go-deadlock v0.2.0 // indirect
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	k8s.io/api v0.18.2

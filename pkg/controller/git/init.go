@@ -11,9 +11,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func GitInitialize(c client.Client, namespace string, teamName string, git *redhatcopv1alpha1.Git, gitTemplate *redhatcopv1alpha1.GitTemplate) error {
+func GitInitialize(c client.Client, namespace string, teamName string, env string, git *redhatcopv1alpha1.Git, gitTemplate *redhatcopv1alpha1.GitTemplate) error {
 	if git.GitHost == redhatcopv1alpha1.GitHub {
-		err := createRepoGitHub(c, teamName, namespace, git, gitTemplate)
+		err := createRepoGitHub(c, teamName, namespace, env, git, gitTemplate)
 		if err != nil {
 			return err
 		}
@@ -34,7 +34,7 @@ func createRepoBitBucket(teamName string) error {
 	return errors.New("BitBucket not available yet")
 }
 
-func createRepoGitHub(c client.Client, teamName string, namespace string, git *redhatcopv1alpha1.Git, gitTemplate *redhatcopv1alpha1.GitTemplate) error {
+func createRepoGitHub(c client.Client, teamName string, namespace string, env string, git *redhatcopv1alpha1.Git, gitTemplate *redhatcopv1alpha1.GitTemplate) error {
 	tokenSecret := &corev1.Secret{}
 	err := c.Get(context.TODO(), types.NamespacedName{Name: gitTemplate.AccountSecret.Name, Namespace: gitTemplate.AccountSecret.Namespace}, tokenSecret)
 	if err != nil {
@@ -48,6 +48,11 @@ func createRepoGitHub(c client.Client, teamName string, namespace string, git *r
 	}
 	if !hasGit {
 		github.CreateNewRespository(teamName, token, gitTemplate.Owner, gitTemplate.Repo, git)
+	}
+
+	err = github.GitAddEnvironment(token, env, gitTemplate.Owner, github.GetTeamRepoName(teamName))
+	if err != nil {
+		return err
 	}
 	return nil
 }
