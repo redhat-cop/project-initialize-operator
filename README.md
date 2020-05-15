@@ -8,7 +8,7 @@ _This repository is currently undergoing active development. Functionality may b
 This repository contains the project initialize operator which provides functionality for creating new projects within OpenShift and triggering custom onboarding processes, specifically around the GitOps solution [ArgoCD](https://argoproj.github.io/argo-cd/).
 
 
-### Install (OpenShift)
+## Install (OpenShift)
 
 Run the following steps to run the operator locally. The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
 
@@ -54,8 +54,63 @@ Run the following command when ready to deploy the operator into cluster it will
 ```
 $ oc apply -f deploy/operator.yaml
 ```
+
+## Adding Defined Quota Sizes to Cluster
+
+When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
+
+```
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitializeQuota
+metadata:
+  name: small
+spec:
+  hard:
+    cpu: "5"
     memory: "10Gi"
     pods: "10"
+```
+
+## GitOps Integration
+The creation of a namespace's GIT repository for [ArgoCD](https://argoproj.github.io/argo-cd/) integration can be automated by including details about the GIT host and the template to be used as the base contents of the repository to be created.
+
+
+| Property | Description | 
+| --------- | ---------- |
+| `gitHost` | The hosting platform for the GIT repositories (GitHub only option currenty)  |
+| `private` | Is the newly created repository publicly available or private |
+| `desc` | Description of the new repository |
+| `owner` | The owner/organization of the GitHub account. Currently this must match the GitTemplate owner |
+| `repo` | The name of the repository to use as a template |
+| `accountSecret` | The secret name and namespace that contains the account token/credentials |
+
+
+```
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitialize
+metadata:
+  name: example-projectinitialize
+spec:
+  team: test
+  env: dev
+  cluster: clusterA
+  displayName: "Test development project"
+  desc: "A test project for showing the functionality of the project initialize GIT integration"
+  git:
+    gitHost: GitHub
+    private: false
+    desc: "A repository for showing the GitOps functionality for the project initialize operator"
+    owner: <git-owner-name>
+  gitTemplate:
+    owner: <git-owner-name>
+    repo: <git-template-repo-name>
+    accountSecret:
+      name: <secret-name>
+      namespace: <namespace-of-secret>
+```
+
+### GIT Hosts
+#### [GitHub](docs/github.md)
 
 ## Example Workflow
 The project initialize operator will need to be running in the project-operator namespace before running the following example workslow.
