@@ -45,24 +45,24 @@ spec:
                 desc:
                   description: Description of the repository to create/clone
                   type: string
-                gitHost:
-                  description: The host platform type
-                  enum:
-                  - GitHub
-                  - GitLab
-                  - BitBucket
-                  type: string
                 owner:
                   description: Account to copy template
                   type: string
                 private:
                   description: Private or public repository
                   type: boolean
+                provider:
+                  description: The host provider type
+                  enum:
+                  - GitHub
+                  - GitLab
+                  - BitBucket
+                  type: string
               required:
               - desc
-              - gitHost
               - owner
               - private
+              - provider
               type: object
             gitTemplate:
               description: Git

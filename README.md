@@ -77,7 +77,7 @@ The creation of a namespace's GIT repository for [ArgoCD](https://argoproj.githu
 
 | Property | Description | 
 | --------- | ---------- |
-| `gitHost` | The hosting platform for the GIT repositories (GitHub only option currenty)  |
+| `provider` | The hosting provider platform for the GIT repositories (GitHub only option currenty)  |
 | `private` | Is the newly created repository publicly available or private |
 | `desc` | Description of the new repository |
 | `owner` | The owner/organization of the GitHub account. Currently this must match the GitTemplate owner |
@@ -97,7 +97,7 @@ spec:
   displayName: "Test development project"
   desc: "A test project for showing the functionality of the project initialize GIT integration"
   git:
-    gitHost: GitHub
+    provider: GitHub
     private: false
     desc: "A repository for showing the GitOps functionality for the project initialize operator"
     owner: <git-owner-name>
@@ -109,7 +109,7 @@ spec:
       namespace: <namespace-of-secret>
 ```
 
-### GIT Hosts
+### GIT Providers
 #### [GitHub](docs/github.md)
 
 ## Example Workflow

@@ -41,9 +41,9 @@ type ProjectInitialize struct {
 // Git
 // +k8s:openapi-gen=true
 type Git struct {
-	// The host platform type
+	// The host provider type
 	// +kubebuilder:validation:Enum=GitHub;GitLab;BitBucket
-	GitHost GitHost `json:"gitHost"`
+	Provider Provider `json:"provider"`
 	// Private or public repository
 	Private bool `json:"private"`
 	// Description of the repository to create/clone
@@ -53,12 +53,12 @@ type Git struct {
 }
 
 // GitHost specifies what type of API to use for accessing hosting platform
-type GitHost string
+type Provider string
 
 const (
-	GitLab    GitHost = "GitLab"
-	BitBucket GitHost = "BitBucket"
-	GitHub    GitHost = "GitHub"
+	GitLab    Provider = "GitLab"
+	BitBucket Provider = "BitBucket"
+	GitHub    Provider = "GitHub"
 )
 
 // Git

@@ -5,17 +5,17 @@ metadata:
 spec:
   team: test
   env: dev
-  cluster: clusterA
-  displayName: "Test development project"
-  desc: "A test project for showing the functionality of the project initialize GIT integration"
+  cluster: np1
+  displayName: "Test Project"
+  desc: "A test project for showing the functionality of the project initialize operator"
   git:
-    gitHost: GitHub
+    provider: GitHub
     private: false
-    desc: "A repository for showing the GitOps functionality for the project initialize operator"
-    owner: <git-owner-name>
+    desc: "Cool"
+    owner: cnuland
   gitTemplate:
-    owner: <git-owner-name>
-    repo: <git-template-repo-name>
+    owner: cnuland
+    repo: hello-chris
     accountSecret:
-      name: <secret-name>
-      namespace: <namespace-of-secret>
+      name: github
+      namespace: project-operator
