@@ -47,7 +47,6 @@ $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
 ```
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd_3x.yaml
 ```
-
 ### Deploy Operator (OpenShift)
 Run the following command when ready to deploy the operator into cluster it will monitor
 
@@ -55,7 +54,29 @@ Run the following command when ready to deploy the operator into cluster it will
 $ oc apply -f deploy/operator.yaml
 ```
 
-## Adding Defined Quota Sizes to Cluster
+### Namespace Labels/Annotations
+Labels and annotations can be added to the namespace that is generated through the operator by specifying the values within the `ProjectInitialize` CR.
+
+```
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitialize
+metadata:
+  name: example-projectinitialize
+spec:
+  team: test
+  env: dev
+  cluster: clusterA
+  displayName: "Test Project"
+  desc: "A test project for showing the functionality of the project initialize operator"
+  quotaSize: small
+  namespaceDetails:
+    annotations:
+      testKey: testValue
+    labels:
+      testKey: testValue
+```
+
+### Adding Defined Quota Sizes to Cluster
 
 When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
 

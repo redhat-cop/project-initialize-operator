@@ -9,6 +9,7 @@ import (
 	gitinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/git"
 	projectinit "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/ocp/project"
 	project "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize/resources"
+	"github.com/redhat-cop/quay-operator/pkg/controller/quayecosystem/logging"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -117,6 +118,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		if err != nil {
 			return reconcile.Result{}, err
 		}
+
 		// TODO setup ArgoCD, Qoutas, GIT and LDAP
 		if instance.Spec.QuotaSize != "" {
 			err, quotaSize := projectinit.GetQuotaSizeFromCluster(r.client, instance.Spec.QuotaSize)
@@ -138,11 +140,25 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 				// TODO reverse the project creation?
 			}
 		}
+
+		// Check if labels or annotations have changed
+		if instance.Spec.NamespaceDetails != nil {
+			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+		}
+
 		log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
-		log.Info(fmt.Sprintf("Found project %s", found.Name))
-		// TODO check for changes to CR file
-		// Example - changes to qouta size
+		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
+		// Check if labels or annotations have changed
+		if instance.Spec.NamespaceDetails != nil {
+			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+		}
 	}
 
 	return reconcile.Result{}, nil

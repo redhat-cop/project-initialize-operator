@@ -10,14 +10,15 @@ import (
 
 // ProjectInitializeSpec defines the desired state of ProjectInitialize
 type ProjectInitializeSpec struct {
-	Team        string       `json:"team"`
-	Env         string       `json:"env"`
-	Cluster     string       `json:"cluster,omitempty"`
-	DisplayName string       `json:"displayName"`
-	Desc        string       `json:"desc"`
-	QuotaSize   string       `json:"quotaSize,omitempty"`
-	Git         *Git         `json:"git,omitempty"`
-	GitTemplate *GitTemplate `json:"gitTemplate,omitempty"`
+	Team             string            `json:"team"`
+	Env              string            `json:"env"`
+	Cluster          string            `json:"cluster,omitempty"`
+	DisplayName      string            `json:"displayName"`
+	Desc             string            `json:"desc"`
+	QuotaSize        string            `json:"quotaSize,omitempty"`
+	Git              *Git              `json:"git,omitempty"`
+	GitTemplate      *GitTemplate      `json:"gitTemplate,omitempty"`
+	NamespaceDetails *NamespaceDetails `json:"namespaceDetails,omitempty"`
 }
 
 // ProjectInitializeStatus defines the observed state of ProjectInitialize
@@ -72,8 +73,12 @@ type GitTemplate struct {
 	Repo string `json:"repo"`
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+type NamespaceDetails struct {
+	Labels      map[string]string `json:"labels,omitempty" protobuf:"bytes,11,rep,name=labels"`
+	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
+}
 
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // ProjectInitializeList contains a list of ProjectInitialize
 type ProjectInitializeList struct {
 	metav1.TypeMeta `json:",inline"`
