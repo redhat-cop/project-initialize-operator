@@ -10,6 +10,7 @@ require (
 	github.com/cockroachdb/ttycolor v0.0.0-20180709150743-a1d5aaeb377d // indirect
 	github.com/getsentry/raven-go v0.2.0 // indirect
 	github.com/google/go-github/v31 v31.0.0
+	github.com/google/martian v2.1.0+incompatible
 	github.com/lightstep/lightstep-tracer-go v0.20.0 // indirect
 	github.com/openshift/api v3.9.1-0.20190924102528-32369d4db2ad+incompatible
 	github.com/openshift/client-go v0.0.0-20200326155132-2a6cd50aedd0

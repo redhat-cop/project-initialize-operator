@@ -8,10 +8,9 @@ import (
 	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
 )
 
-func CheckForGitOpsRepository(teamName string, owner string, token string) (bool, error) {
+func CheckForGitOpsRepository(client *github.Client, suffix string, teamName string, owner string) (bool, error) {
 	// Check if repo exists
-	client := InitializeGitHubClient(token)
-	repoName := GetTeamRepoName(teamName)
+	repoName := GetTeamRepoName(teamName, suffix)
 
 	repos, _, err := client.Repositories.List(context.Background(), owner, nil)
 	if err != nil {
@@ -25,13 +24,22 @@ func CheckForGitOpsRepository(teamName string, owner string, token string) (bool
 	}
 	return false, nil
 }
+func CreateNewRespository(client *github.Client, suffix string, teamName string, gitDetails *redhatcopv1alpha1.Git) error {
+	repoName := GetTeamRepoName(teamName, suffix)
+	newRepo := getRepoRequest(repoName, gitDetails.Owner, gitDetails.Private, gitDetails.Desc)
+	repo, _, err := client.Repositories.Create(context.TODO(), "", newRepo)
+	if err != nil {
+		return err
+	}
+	log.Info(fmt.Sprintf("Successfully created new repo: %v\n", repo.GetName()))
+	return nil
+}
 
-func CreateNewRespository(teamName string, token string, templateOwner string, templateRepo string, gitDetails *redhatcopv1alpha1.Git) error {
-	client := InitializeGitHubClient(token)
+func CreateNewRespositoryWithTemplate(client *github.Client, suffix string, teamName string, templateOwner string, templateRepo string, gitDetails *redhatcopv1alpha1.Git) error {
 
-	repoName := GetTeamRepoName(teamName)
+	repoName := GetTeamRepoName(teamName, suffix)
 	newRepo := getTemplateRequest(repoName, gitDetails.Owner, gitDetails.Private, gitDetails.Desc)
-	repo, _, err := client.Repositories.CreateFromTemplate(context.Background(), templateOwner, templateRepo, newRepo)
+	repo, _, err := client.Repositories.CreateFromTemplate(context.Background(), "", templateRepo, newRepo)
 	if err != nil {
 		return err
 	}
@@ -48,6 +56,17 @@ func getTemplateRequest(repoName string, owner string, private bool, description
 	}
 }
 
-func GetTeamRepoName(teamName string) string {
-	return fmt.Sprintf("%s-gitops", teamName)
+func getRepoRequest(repoName string, owner string, private bool, description string) *github.Repository {
+	autoInit := true
+
+	return &github.Repository{
+		Name:        &repoName,
+		Private:     &private,
+		Description: &description,
+		AutoInit:    &autoInit,
+	}
+}
+
+func GetTeamRepoName(teamName string, suffix string) string {
+	return fmt.Sprintf("%s-%s", teamName, suffix)
 }

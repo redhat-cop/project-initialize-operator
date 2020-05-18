@@ -51,6 +51,10 @@ type Git struct {
 	Desc string `json:"desc"`
 	// Account to copy template
 	Owner string `json:"owner"`
+	// the suffix that files the teamname in the format teamname-suffix
+	Suffix string `json:"suffix"`
+	// The token of the account that the template will copy to
+	AccountSecret *kapi.ObjectReference `json:"accountSecret"`
 }
 
 // GitHost specifies what type of API to use for accessing hosting platform
@@ -65,8 +69,6 @@ const (
 // Git
 // +k8s:openapi-gen=true
 type GitTemplate struct {
-	// The token of the account that the template will copy to
-	AccountSecret *kapi.ObjectReference `json:"accountSecret"`
 	// Account of the template to copy
 	Owner string `json:"owner"`
 	// Repo to copy

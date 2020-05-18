@@ -133,7 +133,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 				// TODO reverse the project creation?
 			}
 		}
-		if instance.Spec.Git != nil && instance.Spec.GitTemplate != nil {
+		if instance.Spec.Git != nil {
 			err = gitinit.GitInitialize(r.client, instance.ObjectMeta.Namespace, instance.Spec.Team, instance.Spec.Env, instance.Spec.Git, instance.Spec.GitTemplate)
 			if err != nil {
 				return reconcile.Result{}, err

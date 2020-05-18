@@ -42,31 +42,6 @@ spec:
             git:
               description: Git
               properties:
-                desc:
-                  description: Description of the repository to create/clone
-                  type: string
-                owner:
-                  description: Account to copy template
-                  type: string
-                private:
-                  description: Private or public repository
-                  type: boolean
-                provider:
-                  description: The host provider type
-                  enum:
-                  - GitHub
-                  - GitLab
-                  - BitBucket
-                  type: string
-              required:
-              - desc
-              - owner
-              - private
-              - provider
-              type: object
-            gitTemplate:
-              description: Git
-              properties:
                 accountSecret:
                   description: The token of the account that the template will copy
                     to
@@ -104,6 +79,36 @@ spec:
                       description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
                       type: string
                   type: object
+                desc:
+                  description: Description of the repository to create/clone
+                  type: string
+                owner:
+                  description: Account to copy template
+                  type: string
+                private:
+                  description: Private or public repository
+                  type: boolean
+                provider:
+                  description: The host provider type
+                  enum:
+                  - GitHub
+                  - GitLab
+                  - BitBucket
+                  type: string
+                suffix:
+                  description: the suffix that files the teamname in the format teamname-suffix
+                  type: string
+              required:
+              - accountSecret
+              - desc
+              - owner
+              - private
+              - provider
+              - suffix
+              type: object
+            gitTemplate:
+              description: Git
+              properties:
                 owner:
                   description: Account of the template to copy
                   type: string
@@ -111,7 +116,6 @@ spec:
                   description: Repo to copy
                   type: string
               required:
-              - accountSecret
               - owner
               - repo
               type: object

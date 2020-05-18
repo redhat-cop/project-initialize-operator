@@ -2,25 +2,28 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/google/go-github/v31/github"
 )
 
-func GitAddEnvironment(token string, env string, owner string, repo string) error {
-	found, err := getBranch(token, env, owner, repo)
+func GitAddEnvironment(client *github.Client, env string, owner string, repo string) error {
+	found, err := getBranch(client, env, owner, repo)
 	if err != nil {
 		return err
 	}
 
 	if found == nil {
-		master, err := getBranch(token, "master", owner, repo)
+		master, err := getBranch(client, "master", owner, repo)
 		if err != nil {
 			return err
 		}
+		if master == nil || master.Commit.SHA == nil {
+			return errors.New(fmt.Sprintf("SHA1 for master branch on respository %s not found", repo))
+		}
 		emptyString := ""
 		ref := fmt.Sprintf("refs/heads/%s", env)
-		client := InitializeGitHubClient(token)
 		gitRef := &github.Reference{
 			Ref: &ref,
 			URL: &emptyString,
@@ -41,8 +44,7 @@ func GitAddEnvironment(token string, env string, owner string, repo string) erro
 	return nil
 }
 
-func getBranch(token string, branch string, owner string, repo string) (*github.Branch, error) {
-	client := InitializeGitHubClient(token)
+func getBranch(client *github.Client, branch string, owner string, repo string) (*github.Branch, error) {
 	ret, res, _ := client.Repositories.GetBranch(context.TODO(), owner, repo, branch)
 
 	if res.StatusCode == 200 {
