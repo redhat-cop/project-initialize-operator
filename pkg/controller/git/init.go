@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
-	github "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/git/github"
+	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/pkg/apis/redhatcop/v1alpha1"
+	github "github.com/redhat-cop/project-initialize-operator/pkg/controller/git/github"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"

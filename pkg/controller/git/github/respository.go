@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-github/v31/github"
-	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
+	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/pkg/apis/redhatcop/v1alpha1"
 )
 
 func CheckForGitOpsRepository(client *github.Client, suffix string, teamName string, owner string) (bool, error) {
@@ -39,7 +39,7 @@ func CreateNewRespositoryWithTemplate(client *github.Client, suffix string, team
 
 	repoName := GetTeamRepoName(teamName, suffix)
 	newRepo := getTemplateRequest(repoName, gitDetails.Owner, gitDetails.Private, gitDetails.Desc)
-	repo, _, err := client.Repositories.CreateFromTemplate(context.Background(), "", templateRepo, newRepo)
+	repo, _, err := client.Repositories.CreateFromTemplate(context.Background(), gitDetails.Owner, templateRepo, newRepo)
 	if err != nil {
 		return err
 	}

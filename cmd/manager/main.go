@@ -9,9 +9,9 @@ import (
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 
-	"github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis"
-	"github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller"
-	"github.com/redhat-cop/project-initialize-operator/project-initialize/version"
+	"github.com/redhat-cop/project-initialize-operator/pkg/apis"
+	"github.com/redhat-cop/project-initialize-operator/pkg/controller"
+	"github.com/redhat-cop/project-initialize-operator/version"
 
 	"github.com/operator-framework/operator-sdk/pkg/k8sutil"
 	kubemetrics "github.com/operator-framework/operator-sdk/pkg/kube-metrics"
@@ -83,7 +83,7 @@ func main() {
 
 	ctx := context.TODO()
 	// Become the leader before proceeding
-	err = leader.Become(ctx, "project-initialize-lock")
+	err = leader.Become(ctx, "project-initialize-operator-lock")
 	if err != nil {
 		log.Error(err, "")
 		os.Exit(1)

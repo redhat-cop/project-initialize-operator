@@ -5,7 +5,7 @@ import (
 
 	projectv1 "github.com/openshift/api/project/v1"
 	projectset "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
-	"github.com/redhat-cop/quay-operator/pkg/controller/quayecosystem/logging"
+	"github.com/redhat-cop/project-initialize-operator/pkg/controller/logging"
 )
 
 func InitializeProjectOCP(client *projectset.ProjectV1Client, projectRequest *projectv1.ProjectRequest) (*projectv1.Project, error) {

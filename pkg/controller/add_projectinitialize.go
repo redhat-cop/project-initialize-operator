@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/controller/projectinitialize"
+	"github.com/redhat-cop/project-initialize-operator/pkg/controller/projectinitialize"
 )
 
 func init() {
