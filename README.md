@@ -93,7 +93,7 @@ spec:
 ```
 
 ## GitOps Integration
-The creation of a namespace's GIT repository for [ArgoCD](https://argoproj.github.io/argo-cd/) integration can be automated by including details about the GIT host and the template to be used as the base contents of the repository to be created.
+The creation of a namespace's GIT repository for [ArgoCD](https://argoproj.github.io/argo-cd/) integration can be automated by including details about the GIT host and repository details.
 
 
 | Property | Description | 
@@ -101,7 +101,7 @@ The creation of a namespace's GIT repository for [ArgoCD](https://argoproj.githu
 | `provider` | The hosting provider platform for the GIT repositories (GitHub only option currenty)  |
 | `private` | Is the newly created repository publicly available or private |
 | `desc` | Description of the new repository |
-| `owner` | The owner/organization of the GitHub account. Currently this must match the GitTemplate owner |
+| `owner` | The owner/organization of the GitHub account.
 | `repo` | The name of the repository to use as a template |
 | `accountSecret` | The secret name and namespace that contains the account token/credentials |
 
@@ -115,19 +115,35 @@ spec:
   team: test
   env: dev
   cluster: clusterA
-  displayName: "Test development project"
-  desc: "A test project for showing the functionality of the project initialize GIT integration"
+  displayName: "Test Project"
+  desc: "A test project for showing the functionality of the project initialize operator"
   git:
     provider: GitHub
     private: false
-    desc: "A repository for showing the GitOps functionality for the project initialize operator"
-    owner: <git-owner-name>
-  gitTemplate:
-    owner: <git-owner-name>
-    repo: <git-template-repo-name>
+    desc: "A test repo for showing the functionality of the project initialize operator"
+    owner: <github-account-name>
+    suffix: gitops
     accountSecret:
-      name: <secret-name>
-      namespace: <namespace-of-secret>
+      name: github
+      namespace: project-operator
+```
+
+### GIT Template
+A Template is an optional property that can be provided as a basis of the contents of your initialized repository. This is handy if you want to include things like examples and links to documentation within the repository from the beginning.
+
+```
+  git:
+    provider: GitHub
+    private: false
+    desc: "A test repo for showing the functionality of the project initialize operator"
+    owner: <github-account-name>
+    suffix: gitops
+    accountSecret:
+      name: github
+      namespace: project-operator
+  gitTemplate:
+    owner: <github-account-name-of-template>
+    repo: <repo-name-of-template>
 ```
 
 ### GIT Providers
