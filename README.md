@@ -1,6 +1,9 @@
 Project Initialize Operator
 ========================================
 
+[![Build Status](https://github.com/redhat-cop/project-initialize-operator/workflows/project-initialize-operator/badge.svg?branch=master)](https://github.com/redhat-cop/project-initialize-operator/actions?workflow=project-initialize-operator)
+ [![Docker Repository on Quay](https://quay.io/repository/redhat-cop/project-initialize-operator/status "Docker Repository on Quay")](https://quay.io/repository/redhat-cop/project-initialize-operator)
+
 _This repository is currently undergoing active development. Functionality may be in flux_
 
 ## Overview
