@@ -65,7 +65,6 @@ spec:
           properties:
             namespaceCreated:
               type: boolean
-          type: object
       type: object
   version: v1alpha1
   versions:

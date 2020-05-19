@@ -1,7 +1,7 @@
 package apis
 
 import (
-	"github.com/redhat-cop/project-initialize-operator/project-initialize/pkg/apis/redhatcop/v1alpha1"
+	"github.com/redhat-cop/project-initialize-operator/pkg/apis/redhatcop/v1alpha1"
 )
 
 func init() {

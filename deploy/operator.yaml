@@ -14,10 +14,10 @@ spec:
     spec:
       serviceAccountName: project-initialize
       containers:
-        - name: project-initialize
-          image: "quay.apps.ent-ocp-prod-useast1.aws.internal.das/operators/project-init:latest"
+        - name: project-initialize-operator
+          image: "quay.io/redhat-cop/project-initialize-operator:latest"
           command:
-          - project-initialize
+          - project-initialize-operator
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
