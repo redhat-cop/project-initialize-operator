@@ -20,7 +20,8 @@ type ProjectInitializeSpec struct {
 
 // ProjectInitializeStatus defines the observed state of ProjectInitialize
 type ProjectInitializeStatus struct {
-	NamespaceCreated bool `json:"namespaceCreated,omitempty"`
+	NamespaceCreated bool   `json:"namespaceCreated,omitempty"`
+	CurrentQuota     string `json:"currentQuota,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

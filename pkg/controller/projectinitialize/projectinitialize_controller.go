@@ -119,22 +119,32 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 		}
 
 		// TODO setup ArgoCD, Qoutas, GIT and LDAP
+		// If theres a quota defined then apply it to the new namespace
 		if instance.Spec.QuotaSize != "" {
-			err, quotaSize := projectinit.GetQuotaSizeFromCluster(r.client, instance.Spec.QuotaSize)
+			err := projectinit.CreateQuota(r.client, instance)
 			if err != nil {
 				return reconcile.Result{}, err
-				// TODO reverse the project creation?
-			}
-			quota := project.GetQuotaResource(fmt.Sprintf("%s-quota", instance.Spec.Team), projectName, *quotaSize)
-			err = projectinit.AddQuotaToProject(r.client, quota)
-			if err != nil {
-				return reconcile.Result{}, err
-				// TODO reverse the project creation?
 			}
 		}
 		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
 		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
+		// Check if the quota has changed
+		if instance.Spec.QuotaSize != "" {
+			if instance.Spec.QuotaSize != instance.Status.CurrentQuota {
+
+				err = projectinit.DeleteQuotaInNamespace(r.client, instance)
+				if err != nil {
+					return reconcile.Result{}, err
+				}
+
+				err = projectinit.CreateQuota(r.client, instance)
+				if err != nil {
+					return reconcile.Result{}, err
+				}
+			}
+		}
+
 		// Check if labels or annotations have changed
 		if instance.Spec.NamespaceDetails != nil {
 			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
