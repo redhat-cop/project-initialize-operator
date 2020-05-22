@@ -12,12 +12,7 @@ This repository contains the project initialize operator which provides function
 
 
 ### Install (OpenShift)
-
-Run the following steps to run the operator locally. The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
-
-Prerequisites:
-
-In order to run the operator locally, you will need to meet these [prerequisites](https://github.com/operator-framework/operator-sdk#prerequisites) and then follow these [instructions](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md#install-the-operator-sdk-cli) to install the operator-sdk.
+The operator will require `cluster-admin` permissions that can be applied using the resources provided in the deploy/ folder.
 
 Create the expected namespace
 ```

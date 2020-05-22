@@ -16,6 +16,8 @@ rules:
   - configmaps
   - secrets
   - resourcequotas
+  - namespaces
+  - resourcequotas
   verbs:
   - create
   - delete
