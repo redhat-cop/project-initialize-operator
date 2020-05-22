@@ -17,7 +17,7 @@ spec:
         - name: project-initialize
           image: "quay.io/cnuland/project-init-operator:latest"
           command:
-          - project-initialize
+          - project-initialize-operator
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE

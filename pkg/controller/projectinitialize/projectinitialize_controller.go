@@ -7,8 +7,10 @@ import (
 	projectset "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
 	redhatcopv1alpha1 "github.com/redhat-cop/project-initialize-operator/pkg/apis/redhatcop/v1alpha1"
 	"github.com/redhat-cop/project-initialize-operator/pkg/controller/logging"
+	gitinit "github.com/redhat-cop/project-initialize-operator/pkg/controller/git"
 	projectinit "github.com/redhat-cop/project-initialize-operator/pkg/controller/projectinitialize/ocp/project"
 	project "github.com/redhat-cop/project-initialize-operator/pkg/controller/projectinitialize/resources"
+
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -132,7 +134,23 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 				// TODO reverse the project creation?
 			}
 		}
-		logging.Log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
+		if instance.Spec.Git != nil {
+			err = gitinit.GitInitialize(r.client, instance.ObjectMeta.Namespace, instance.Spec.Team, instance.Spec.Env, instance.Spec.Git, instance.Spec.GitTemplate)
+			if err != nil {
+				return reconcile.Result{}, err
+				// TODO reverse the project creation?
+			}
+		}
+
+		// Check if labels or annotations have changed
+		if instance.Spec.NamespaceDetails != nil {
+			err = projectinit.UpdateNamespaceAnnotations(r.client, projectName, instance.Spec.NamespaceDetails)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+		}
+
+		log.Info(fmt.Sprintf("Created new project %s", newProject.Name))
 	} else {
 		logging.Log.Info(fmt.Sprintf("Found project %s", found.Name))
 		// Check if labels or annotations have changed
