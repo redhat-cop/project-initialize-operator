@@ -48,17 +48,6 @@ $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd_3x.yaml
 ### Deploy Operator (OpenShift)
 Run the following command when ready to deploy the operator into cluster it will monitor
 
-<<<<<<< HEAD
-### Run Locally (OpenShift)
-Prerequisites:
-
-In order to run the operator locally, you will need to meet these [prerequisites](https://github.com/operator-framework/operator-sdk#prerequisites) and then follow these [instructions](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md#install-the-operator-sdk-cli) to install the operator-sdk.
-
-Run the following steps to run the operator locally.
-
-Pull in dependences
-=======
->>>>>>> 1493a87d98633cb39cc83538f7cbaac37c4f8350
 ```
 $ oc apply -f deploy/operator.yaml
 ```
