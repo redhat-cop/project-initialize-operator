@@ -17,7 +17,7 @@ func CreateQuota(client client.Client, instance *redhatcopv1alpha1.ProjectInitia
 	if err != nil {
 		return err
 	}
-	quota := project.GetQuotaResource(GetQuotaName(instance.Spec.Team), GetProjectName(instance.Spec.Team, instance.Spec.Env), *quotaSize)
+	quota := project.GetQuotaResource(GetQuotaName(instance.Spec.Team), GetProjectName(instance), *quotaSize)
 	err = addQuotaToProject(client, quota)
 	if err != nil {
 		return err
@@ -54,7 +54,7 @@ func updateQuotaStatus(client client.Client, instance *redhatcopv1alpha1.Project
 func DeleteQuotaInNamespace(client client.Client, instance *redhatcopv1alpha1.ProjectInitialize) error {
 	name := GetQuotaName(instance.Spec.Team)
 	resourceQuota := &corev1.ResourceQuota{}
-	err := client.Get(context.TODO(), types.NamespacedName{Name: name, Namespace: GetProjectName(instance.Spec.Team, instance.Spec.Env)}, resourceQuota)
+	err := client.Get(context.TODO(), types.NamespacedName{Name: name, Namespace: GetProjectName(instance)}, resourceQuota)
 	if err != nil {
 		logging.Log.Error(err, fmt.Sprintf("Unable to find ResourceQuota %s for deletion", name))
 		return err
