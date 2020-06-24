@@ -108,7 +108,7 @@ func (r *ReconcileProjectInitialize) Reconcile(request reconcile.Request) (recon
 	}
 	/* TODO - Add reconcile cycle */
 	//Does the project exist?
-	projectName := projectinit.GetProjectName(instance.Spec.Team, instance.Spec.Env)
+	projectName := projectinit.GetProjectName(instance)
 	found, err := r.projectClient.Projects().Get(projectName, metav1.GetOptions{})
 	// If project doesn't exist, create it
 	if err != nil {

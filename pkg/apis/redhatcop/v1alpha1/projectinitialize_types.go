@@ -48,6 +48,7 @@ type ProjectInitializeList struct {
 type NamespaceDetails struct {
 	Labels      map[string]string `json:"labels,omitempty" protobuf:"bytes,11,rep,name=labels"`
 	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,12,rep,name=annotations"`
+	Name        string            `json:"name,omitempty"`
 }
 
 func init() {

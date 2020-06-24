@@ -49,6 +49,8 @@ spec:
                   additionalProperties:
                     type: string
                   type: object
+                name:
+                  type: string
               type: object
             quotaSize:
               type: string
