@@ -4,7 +4,7 @@ Project Initialize Operator
 [![Build Status](https://github.com/redhat-cop/project-initialize-operator/workflows/project-initialize-operator/badge.svg?branch=master)](https://github.com/redhat-cop/project-initialize-operator/actions?workflow=project-initialize-operator)
  [![Docker Repository on Quay](https://quay.io/repository/redhat-cop/project-initialize-operator/status "Docker Repository on Quay")](https://quay.io/repository/redhat-cop/project-initialize-operator)
 
-_This repository is currently undergoing active development. Functionality may be in flux_
+_This repository is currently undergoing active development. Functionality may be in flux._
 
 ## Overview
 This repository contains the Project Initialize Operator which provides functionality for creating new projects within OpenShift and triggering custom on-boarding processes, specifically around the GitOps solution [ArgoCD](https://argoproj.github.io/argo-cd/).
@@ -35,7 +35,7 @@ $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializes_crd.yaml
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializes_crd_3x.yaml
 ```
 
-### Add ProjectInitialize CRD
+### Add ProjectInitializeQuota CRD
 #### 4.X OCP
 ```
 $ oc apply -f deploy/crds/redhatcop.redhat.io_projectinitializequota_crd.yaml
@@ -54,7 +54,7 @@ $ oc apply -f deploy/operator.yaml
 ### Namespace Labels/Annotations
 Labels and annotations can be added to the namespace that is generated through the operator by specifying the values within the `ProjectInitialize` CR.
 
-```
+```yaml
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ProjectInitialize
 metadata:
@@ -76,7 +76,7 @@ spec:
 ### Adding Defined Quota Sizes to Cluster
 When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a particular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
 
-```
+```yaml
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ProjectInitializeQuota
 metadata:
@@ -90,7 +90,7 @@ spec:
 
 
 ## Example Workflow
-The Project Initialize Operator will need to be running in the project-operator namespace before running the following example workflow.
+The Project Initialize Operator will need to be running in the `project-operator` namespace before running the following example workflow.
 
 
 ### Apply T-Shirt Size
