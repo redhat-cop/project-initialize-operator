@@ -18,7 +18,7 @@ Create the expected namespace
 $ oc new-project project-operator
 ```
 
-Add the `ProjectInitialize` CRD and resources to cluster
+Add the `ProjectInitialize` CRD and resources to the cluster
 ```
 $ oc apply -f deploy/service_account.yaml
 $ oc apply -f deploy/role.yaml
@@ -101,9 +101,79 @@ $ oc apply -f deploy/examples/small_projectqouta_cr.yaml
 
 ### Apply Project Initializer
 Apply the `ProjectInitialize` CR which contains details about the dev team name, cluster name, and a reference to the `ProjectInitializeQuota` which will specify the quota to assign the namespace. 
+
+Creating a `ProjectInitialize` object will result in a new project (namespace) being created.
+
 ```
 $ oc apply -f deploy/examples/basic_projectinit_cr.yaml
 ```
 
+The project name will be a derivation of the `team` and `env` specified in the `ProjectInitalize` object.  The result will be `${team}-${env}`.  For example
+
+```yaml
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ProjectInitialize
+metadata:
+  name: phoenix-dev-projectinitialize
+spec:
+  team: phoenix
+  env: dev
+  cluster: us-west-2
+  displayName: "Phoenix project for Dev environment"
+  desc: "a test project for showing the functionality of the project initialize operator"
+  quotaSize: small
+  namespaceDetails:
+    annotations:
+      testkey: testValue
+    labels:
+      testkey: testValue
+```
+
+Will result in a namespace like this:
+
+```
+$ oc apply -f phoenix-dev.yaml
+projectinitialize.redhatcop.redhat.io/phoenix-dev-projectinitialize created
+$ oc get projects phoenix-dev
+NAME          DISPLAY NAME                          STATUS
+phoenix-dev   Phoenix project for Dev environment   Active
+```
+
+Examining the YAML definition is instructive: 
+
+```
+$ oc get projects phoenix-dev -o yaml
+```
+
+```yaml
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  annotations:
+    openshift.io/description: a test project for showing the functionality of the
+      project initialize operator
+    openshift.io/display-name: Phoenix project for Dev environment
+    openshift.io/requester: system:serviceaccount:project-operator:project-initialize
+    openshift.io/sa.scc.mcs: s0:c24,c9
+    openshift.io/sa.scc.supplemental-groups: 1000570000/10000
+    openshift.io/sa.scc.uid-range: 1000570000/10000
+    testkey: testvalue
+  creationTimestamp: "2020-10-01T19:07:20Z"
+  labels:
+    app: phoenix
+    env: dev
+  name: phoenix-dev
+  resourceVersion: "233538"
+  selfLink: /apis/project.openshift.io/v1/projects/phoenix-dev
+  uid: c2ce8b0a-8354-4777-b7fb-fae08354ccb5
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+```
+
+
 ## Development
-### [How-To](docs/development.md)
+
+For help with development, see [docs/development.md](docs/development.md)
