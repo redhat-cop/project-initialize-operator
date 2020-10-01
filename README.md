@@ -7,8 +7,7 @@ Project Initialize Operator
 _This repository is currently undergoing active development. Functionality may be in flux_
 
 ## Overview
-
-This repository contains the project initialize operator which provides functionality for creating new projects within OpenShift and triggering custom onboarding processes, specifically around the GitOps solution [ArgoCD](https://argoproj.github.io/argo-cd/).
+This repository contains the Project Initialize Operator which provides functionality for creating new projects within OpenShift and triggering custom on-boarding processes, specifically around the GitOps solution [ArgoCD](https://argoproj.github.io/argo-cd/).
 
 
 ### Install (OpenShift)
@@ -19,7 +18,7 @@ Create the expected namespace
 $ oc new-project project-operator
 ```
 
-Add projectinitialize crd and resources to cluster
+Add the `ProjectInitialize` CRD and resources to cluster
 ```
 $ oc apply -f deploy/service_account.yaml
 $ oc apply -f deploy/role.yaml
@@ -65,7 +64,7 @@ spec:
   env: dev
   cluster: clusterA
   displayName: "Test Project"
-  desc: "A test project for showing the functionality of the project initialize operator"
+  desc: "A test project for showing the functionality of the Project Initialize Operator"
   quotaSize: small
   namespaceDetails:
     annotations:
@@ -75,8 +74,7 @@ spec:
 ```
 
 ### Adding Defined Quota Sizes to Cluster
-
-When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a praticular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
+When the `quotaSize` attribute is defined in the `ProjectInitializeQuota` Custom Resource (CR) the operator will search for a cluster level `ProjectInitializeQuota` CR that defines a particular quota size. This can be used to define predetermined t-shirt sizes when creating new projects (small, medium, large, etc)
 
 ```
 apiVersion: redhatcop.redhat.io/v1alpha1
@@ -92,7 +90,7 @@ spec:
 
 
 ## Example Workflow
-The project initialize operator will need to be running in the project-operator namespace before running the following example workslow.
+The Project Initialize Operator will need to be running in the project-operator namespace before running the following example workflow.
 
 
 ### Apply T-Shirt Size
